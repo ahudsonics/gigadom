@@ -1,7 +1,7 @@
 // src/App.jsx
 
 import React from 'react'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Login from './components/Login'
 import Signup from './components/Signup'
 import Todo from './components/Todo'
@@ -11,11 +11,11 @@ const App = () => {
   return (
     <Router>
       <div className="App">
-        <Switch>
-          <Route path="/login" component={Login} />
-          <Route path="/signup" component={Signup} />
-          <Route path="/todo" component={Todo} />
-        </Switch>
+        <Routes>
+          <Route path="/login" element={<Login/>} />
+          <Route path="/signup" element={<Signup/>} />
+          <Route path="/todo" element={<Todo/>} />
+        </Routes>
       </div>
     </Router>
   )

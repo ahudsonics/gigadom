@@ -1,44 +1,54 @@
 // src/components/Signup.jsx
 
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
 import axios from 'axios'
 
 const Signup = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  })
 
-  const handleSubmit = async (e) => {
+  const { email, password } = formData
+
+  const onChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
+
+  const onSubmit = async (e) => {
     e.preventDefault()
 
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+    const body = JSON.stringify({ email, password })
+
     try {
-      // Make a request to your server for signup using axios
-      const res = await axios.post('/api/auth/signup', { email, password })
+      const res = await axios.post('http://localhost:5174/api/auth/signup', body, config)
       console.log('Signup successful', res.data)
-    } catch (error) {
-      console.error('Signup failed', error.response.data)
+    } catch (err) {
+      console.error('Signup failed', err.response.data)
     }
   }
 
   return (
     <div>
       <h2>Signup</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+      <form onSubmit={onSubmit}>
+        <input type="email" placeholder="Email" name="email" value={email} onChange={onChange} required />
         <input
           type="password"
           placeholder="Password"
+          name="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={onChange}
+          minLength="6"
         />
         <button type="submit">Signup</button>
       </form>
-      <Link to="/login">Already have an account? Login here</Link>
     </div>
   )
 }

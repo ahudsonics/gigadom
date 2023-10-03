@@ -5,7 +5,12 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const config = require('config');
+
+// Load configuration
+const config = require('./config/default.json');
+
+console.log('Config:', config);
+
 const path = require('path');
 
 const app = express();
@@ -16,7 +21,7 @@ app.use(cookieParser());
 app.use(cors());
 
 // MongoDB configuration
-const db = config.get('mongoURI');
+const db = 'mongodb+srv://adhudsond:WroQGBFl11ZC6ZnS@cluster0.8n1kphs.mongodb.net/';
 mongoose
   .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected'))

@@ -8,7 +8,6 @@ const Todo = () => {
   const [newTodo, setNewTodo] = useState('')
 
   useEffect(() => {
-    // Fetch todos from the server
     const fetchTodos = async () => {
       try {
         const res = await axios.get('/api/todo')
@@ -43,9 +42,44 @@ const Todo = () => {
     }
   }
 
+  const addJob = () => {
+    const jobName = prompt('Enter job name:')
+    const jobType = prompt('Enter job type:')
+    const jobDescription = prompt('Enter job description:')
+    const projectLength = parseInt(prompt('Enter project length in days:'))
+    const companyClient = prompt('Enter company or client:')
+    const hoursSpent = parseFloat(prompt('Enter hours spent:'))
+    const hoursExpected = parseFloat(prompt('Enter hours expected:'))
+    const budgetSpent = parseFloat(prompt('Enter budget spent:'))
+    const budgetExpected = parseFloat(prompt('Enter budget expected:'))
+    const paidPerHourExpected = (budgetExpected / hoursExpected).toFixed(2)
+    const paidPerHourFinal = (budgetSpent / hoursSpent).toFixed(2)
+    const notes = prompt('Enter day-to-day notes (separated by commas):').split(',')
+
+    const newJob = {
+      jobName,
+      jobType,
+      jobDescription,
+      projectLength,
+      companyClient,
+      hoursSpent,
+      hoursExpected,
+      budgetSpent,
+      budgetExpected,
+      paidPerHourExpected,
+      paidPerHourFinal,
+      notes
+    }
+
+    // Display all details of the todo card
+    alert(JSON.stringify(newJob, null, 2))
+
+    setTodos([...todos, newJob])
+  }
+
   return (
     <div>
-      <h2>Todo List</h2>
+      <h2>Job Management System </h2>
       <form onSubmit={handleAddTodo}>
         <input
           type="text"
@@ -55,11 +89,11 @@ const Todo = () => {
         />
         <button type="submit">Add</button>
       </form>
+      <button onClick={addJob}>Add Job</button>
       <ul>
-        {todos.map((todo) => (
-          <li key={todo._id}>
-            {todo.jobName}{' '}
-            <button onClick={() => handleDeleteTodo(todo._id)}>Delete</button>
+        {todos.map((todo, index) => (
+          <li key={index}>
+            {todo.jobName} <button onClick={() => handleDeleteTodo(todo._id)}>Delete</button>
           </li>
         ))}
       </ul>
